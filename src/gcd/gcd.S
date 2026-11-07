@@ -44,9 +44,10 @@ gcd_u32_asm:
 
 .Lorder:
     bgeu     a1, a0, .Lstep            # if (b>=a) goto Lstep
-    addi     t2, a0, 0                 # t2 = a = temp.swap
-    addi     a0, a1, 0                 # a=b
-    addi     a1, t2, 0                 # b=temp.swap
+    sub      t2, a0, a1                # t2=a-b
+    mv       a0, a1                     # a=b
+    mv       a1, t2                     # b=t2
+    jal      x0, .Lright                #a-b is even and nonzero: skip the checks
 
 .Lstep:                                 #b -= a; b is now even
     sub      a1, a1, a0                # b -= a
